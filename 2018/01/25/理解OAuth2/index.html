@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="OAuth2.0OAuth2解决什么问题？为了更好的理解OAuth2.0，先假设这么一个例子：  有一家叫“CloudPrint”的网站，能够将微信中照片在线打印出来。小明因为工作原因，需要挑选一些照片打印出来，想使用“CloudPrint”打印照片。问题是只有得到小明的授权，微信才会同意”CloudPrint”打印照片。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="理解OAuth2.0">
+<meta property="og:url" content="http://yoursite.com/2018/01/25/理解OAuth2/index.html">
+<meta property="og:site_name" content="My First Blog">
+<meta property="og:description" content="OAuth2.0OAuth2解决什么问题？为了更好的理解OAuth2.0，先假设这么一个例子：  有一家叫“CloudPrint”的网站，能够将微信中照片在线打印出来。小明因为工作原因，需要挑选一些照片打印出来，想使用“CloudPrint”打印照片。问题是只有得到小明的授权，微信才会同意”CloudPrint”打印照片。">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/168328/201612/168328-20161228154537320-2101529434.jpg">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107221527112-1393543505.jpg">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107221317097-1165005295.jpg">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107225510394-1903686969.jpg">
+<meta property="og:image" content="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107230647441-452985515.jpg">
+<meta property="og:updated_time" content="2018-01-25T03:47:50.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="理解OAuth2.0">
+<meta name="twitter:description" content="OAuth2.0OAuth2解决什么问题？为了更好的理解OAuth2.0，先假设这么一个例子：  有一家叫“CloudPrint”的网站，能够将微信中照片在线打印出来。小明因为工作原因，需要挑选一些照片打印出来，想使用“CloudPrint”打印照片。问题是只有得到小明的授权，微信才会同意”CloudPrint”打印照片。">
+<meta name="twitter:image" content="https://images2015.cnblogs.com/blog/168328/201612/168328-20161228154537320-2101529434.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/01/25/理解OAuth2/"/>
+
+
+
+
+
+  <title>理解OAuth2.0 | My First Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">My First Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/理解OAuth2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Wesley Wong">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="My First Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">理解OAuth2.0</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-25T11:31:34+08:00">
+                2018-01-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="OAuth2-0"><a href="#OAuth2-0" class="headerlink" title="OAuth2.0"></a>OAuth2.0</h1><h2 id="OAuth2解决什么问题？"><a href="#OAuth2解决什么问题？" class="headerlink" title="OAuth2解决什么问题？"></a>OAuth2解决什么问题？</h2><p>为了更好的理解OAuth2.0，先假设这么一个例子：</p>
+<blockquote>
+<p>有一家叫“CloudPrint”的网站，能够将微信中照片在线打印出来。小明因为工作原因，需要挑选一些照片打印出来，想使用“CloudPrint”打印照片。问题是只有得到小明的授权，微信才会同意”CloudPrint”打印照片。</p>
+</blockquote>
+<a id="more"></a>
+<p>上述情况中想要使用“CloudPrint”，小明必须交出自己微信的用户名和密码，“CloudPrint”就可以读取用户的照片了。这种做法存在几个严重缺陷</p>
+<ol>
+<li>“CloudPrint” 会保存用户的密码，这样很不安全。</li>
+<li>“CloudPrint” 可以获取小明微信中所有信息，小明不能限制“CloudPrint”获得授权的范围和有效期</li>
+<li>只有小明修改密码，才能收回“ClouPrint”的权利。但是，会使得其他所有获得小明授权的第三方应用程序全部失效。</li>
+<li>只要有一个第三方应用程序被破解，就会导致小明密码泄漏，以及所有被密码保护的数据泄漏。</li>
+</ol>
+<p>OAuth2就是为了解决上述问题</p>
+<h2 id="OAuth中的角色"><a href="#OAuth中的角色" class="headerlink" title="OAuth中的角色"></a>OAuth中的角色</h2><p><strong>resource owner（资源拥有者）</strong></p>
+<p>一个能够授权访问受保护资源的实体。当资源所有者是一个人时，它被称为<code>end-user</code>。上述例子中的小明。</p>
+<p><strong>resource server（资源服务器）</strong></p>
+<p>能够响应使用access token访问受保护的资源的请求。上述例子中的微信。</p>
+<p><strong>Client （客户端）</strong></p>
+<p>又称为第三方应用程序。上述例子中的“CloudPrint”。</p>
+<p><strong>authorization server （授权服务器）</strong></p>
+<p>管理Resource Owner，Client和Resource Server的三角关系的中间层。Authorization server和Resource server可以是独立的服务提供商，也可以是在一起的，比如微信作为资源服务器的同时也提供授权服务</p>
+<h2 id="授权流程"><a href="#授权流程" class="headerlink" title="授权流程"></a>授权流程</h2><p><img src="https://images2015.cnblogs.com/blog/168328/201612/168328-20161228154537320-2101529434.jpg" alt="OAuth2授权流程"></p>
+<ul>
+<li>（A）客户端向资源拥有者发起授权请求</li>
+<li>（B）客户端收到授权许可</li>
+<li>（C）客户端使用上一步获得的授权，向授权服务器申请access token。</li>
+<li>（D）授权服务器验证客户端并验证授权许可，如果有效，则发出access token。</li>
+<li>（E）客户端使用access token，向资源服务器申请获取资源。</li>
+<li>（F）资源服务器验证access token，如果有效，开放资源。</li>
+</ul>
+<h2 id="OAuth2-0-授权模式"><a href="#OAuth2-0-授权模式" class="headerlink" title="OAuth2.0 授权模式"></a>OAuth2.0 授权模式</h2><h2 id="Authorization-Code（授权码模式）"><a href="#Authorization-Code（授权码模式）" class="headerlink" title="Authorization Code（授权码模式）"></a>Authorization Code（授权码模式）</h2><p><img src="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107221527112-1393543505.jpg" alt="AuthorizationCode模式"></p>
+<ul>
+<li>（A）资源拥有者通过User-Agent（比如浏览器）访问客户端，客户端将资源拥有者导向授权服务器，就是用浏览器访问一个URL，这个URL由授权服务器提供，访问的Client需要提供客户端标示，请求范围，状态，重定向URI这些参数。</li>
+<li>（B）authorization server验证客户端在（A）中传递的信息，如果有效则让Resource Owner选择是否授权（通常是登录页面）</li>
+<li>（C）假设Resource Owner授权，authorization server将导向Client在（A）提供的重定向URI，同时返回一个授权码（Authorization Code）给Client</li>
+<li>（D）Client通过在（C）中获取得Authorization Code和客户端标示，重定向URL作为参数，向authorization server申请访问令牌（access token）</li>
+<li>（E）Authorization server返回访问令牌和可选的刷新令牌以及令牌有效时间等信息给Client</li>
+</ul>
+<h2 id="Implicit（简化模式）"><a href="#Implicit（简化模式）" class="headerlink" title="Implicit（简化模式）"></a>Implicit（简化模式）</h2><p>Implicit是Authorization Code模式的简化版本，其中省略了Authorization Code的环节，而是直接返回访问令牌和刷新令牌。</p>
+<p><img src="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107221317097-1165005295.jpg" alt="Implicit模式"></p>
+<ul>
+<li>（A）Resource Owner通过User-Agent（比如浏览器）访问客户端，客户端将资源拥有者导向授权服务器，就是用浏览器访问一个URL，这个URL由授权服务器提供，访问的Client需要提供客户端标示，请求范围，状态，重定向URI这些参数。</li>
+<li>（B）authorization server验证客户端在（A）中传递的信息，如果有效则让Resource Owner选择是否授权（通常是登录页面）</li>
+<li>（C）假设Resource Owner授权，authorization server将导向Client在（A）提供的重定向URI，URI地址中包含access token</li>
+<li>（D）浏览器遵循重定向指令向资源服务器发起请求</li>
+<li>（E）资源服务器返回一个网页（通常是嵌入脚本的HTML）</li>
+<li>（F）浏览器在本地执行（E）中获取的脚本，提取access token</li>
+<li>（G）浏览器将令牌传递给客户端</li>
+</ul>
+<h2 id="Resource-Owner-Password-Credentials-Grant（密码模式）"><a href="#Resource-Owner-Password-Credentials-Grant（密码模式）" class="headerlink" title="Resource Owner Password Credentials Grant（密码模式）"></a>Resource Owner Password Credentials Grant（密码模式）</h2><p>Resource Owner向Client提供自己的用户名和密码。客户端使用这些信息，向授权服务器获取授权。</p>
+<p><img src="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107225510394-1903686969.jpg" alt="密码模式"></p>
+<ul>
+<li>（A）Resource Owner向客户端提供其用户名和密码。</li>
+<li>（B）Client使用Resource Owner的用户名和密码向Authorization server的token endpoint请求access token。</li>
+<li>（C）Authorization server验证Resource Owner的用户名和密码，确认无误后向Client发放access token</li>
+</ul>
+<h2 id="Client-Credentials-Grant-（客户端证书模式）"><a href="#Client-Credentials-Grant-（客户端证书模式）" class="headerlink" title="Client Credentials Grant （客户端证书模式）"></a>Client Credentials Grant （客户端证书模式）</h2><p>Client直接已自己的名义而不是Resource owner的名义去要求访问Resource server的一些受保护资源<br><img src="https://images2015.cnblogs.com/blog/168328/201701/168328-20170107230647441-452985515.jpg" alt="客户端模式"></p>
+<ul>
+<li>（A）Client向Authorization server的token endpoint发起认证，获取access token</li>
+<li>（B）Authorization server认证通过后返回access token</li>
+</ul>
+<p><strong>相关参考</strong><br><a href="http://www.cnblogs.com/linianhui/p/oauth2-authorization.html" target="_blank" rel="noopener">http://www.cnblogs.com/linianhui/p/oauth2-authorization.html</a><br><a href="http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html" target="_blank" rel="noopener">http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html</a><br><a href="https://tools.ietf.org/html/rfc6749" target="_blank" rel="noopener">https://tools.ietf.org/html/rfc6749</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Wesley Wong</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#OAuth2-0"><span class="nav-number">1.</span> <span class="nav-text">OAuth2.0</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth2解决什么问题？"><span class="nav-number">1.1.</span> <span class="nav-text">OAuth2解决什么问题？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth中的角色"><span class="nav-number">1.2.</span> <span class="nav-text">OAuth中的角色</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#授权流程"><span class="nav-number">1.3.</span> <span class="nav-text">授权流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#OAuth2-0-授权模式"><span class="nav-number">1.4.</span> <span class="nav-text">OAuth2.0 授权模式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authorization-Code（授权码模式）"><span class="nav-number">1.5.</span> <span class="nav-text">Authorization Code（授权码模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Implicit（简化模式）"><span class="nav-number">1.6.</span> <span class="nav-text">Implicit（简化模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Resource-Owner-Password-Credentials-Grant（密码模式）"><span class="nav-number">1.7.</span> <span class="nav-text">Resource Owner Password Credentials Grant（密码模式）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Client-Credentials-Grant-（客户端证书模式）"><span class="nav-number">1.8.</span> <span class="nav-text">Client Credentials Grant （客户端证书模式）</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Wesley Wong</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
