@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="Keycloak," />
 
 
 
@@ -79,12 +79,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Wesley Wong">
-<meta property="og:url" content="http://yoursite.com/index.html">
+<meta name="description" content="Identity BrokeringIdentity Broker是一种中介服务，它将多个服务提供商（service provider）与不同的身份提供商（identitiy  provider）连接起来。作为中介服务，Identity Broker负责创建与外部身份提供商的信任关系，以便使用其身份访问由服务提供商暴露的内部服务。 从用户角度来看，Identity Broker提供了一种以用户为中">
+<meta name="keywords" content="Keycloak">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keycloak Identity Brokering">
+<meta property="og:url" content="http://yoursite.com/2018/01/30/Keycloak-Identity-Brokering/index.html">
 <meta property="og:site_name" content="Wesley Wong">
+<meta property="og:description" content="Identity BrokeringIdentity Broker是一种中介服务，它将多个服务提供商（service provider）与不同的身份提供商（identitiy  provider）连接起来。作为中介服务，Identity Broker负责创建与外部身份提供商的信任关系，以便使用其身份访问由服务提供商暴露的内部服务。 从用户角度来看，Identity Broker提供了一种以用户为中">
+<meta property="og:image" content="http://www.keycloak.org/docs/latest/server_admin/images/identity_broker_flow.png">
+<meta property="og:updated_time" content="2018-01-30T06:03:23.872Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Wesley Wong">
+<meta name="twitter:title" content="Keycloak Identity Brokering">
+<meta name="twitter:description" content="Identity BrokeringIdentity Broker是一种中介服务，它将多个服务提供商（service provider）与不同的身份提供商（identitiy  provider）连接起来。作为中介服务，Identity Broker负责创建与外部身份提供商的信任关系，以便使用其身份访问由服务提供商暴露的内部服务。 从用户角度来看，Identity Broker提供了一种以用户为中">
+<meta name="twitter:image" content="http://www.keycloak.org/docs/latest/server_admin/images/identity_broker_flow.png">
 
 
 
@@ -114,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/01/30/Keycloak-Identity-Brokering/"/>
 
 
 
 
 
-  <title>Wesley Wong</title>
+  <title>Keycloak Identity Brokering | Wesley Wong</title>
   
 
 
@@ -139,8 +146,7 @@
     
   
 
-  <div class="container sidebar-position-left 
-  page-home">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -213,9 +219,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -245,9 +251,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/30/Keycloak-Identity-Brokering/" itemprop="url">Keycloak Identity Brokering</a></h1>
+          <h1 class="post-title" itemprop="name headline">Keycloak Identity Brokering</h1>
         
 
         <div class="post-meta">
@@ -297,8 +301,7 @@
       
 
       
-        
-          <h1 id="Identity-Brokering"><a href="#Identity-Brokering" class="headerlink" title="Identity Brokering"></a>Identity Brokering</h1><p>Identity Broker是一种中介服务，它将多个服务提供商（service provider）与不同的身份提供商（identitiy  provider）连接起来。作为中介服务，Identity Broker负责创建与外部身份提供商的信任关系，以便使用其身份访问由服务提供商暴露的内部服务。</p>
+        <h1 id="Identity-Brokering"><a href="#Identity-Brokering" class="headerlink" title="Identity Brokering"></a>Identity Brokering</h1><p>Identity Broker是一种中介服务，它将多个服务提供商（service provider）与不同的身份提供商（identitiy  provider）连接起来。作为中介服务，Identity Broker负责创建与外部身份提供商的信任关系，以便使用其身份访问由服务提供商暴露的内部服务。</p>
 <p>从用户角度来看，Identity Broker提供了一种以用户为中心和集中的方式来管理跨不同安全域的身份。现有账户可以与来自不同身份提供商的一个或多个身份相关联，甚至可以基于从身份提供商获得的身份信息创建账户。</p>
 <p>身份提供商通常通常基于以下协议</p>
 <ol>
@@ -306,14 +309,22 @@
 <li><code>OpenID Connect v1.0</code></li>
 <li><code>SAML v2.0</code></li>
 </ol>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/30/Keycloak-Identity-Brokering/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+<a id="more"></a>
+<h2 id="Brokering-Overview"><a href="#Brokering-Overview" class="headerlink" title="Brokering Overview"></a>Brokering Overview</h2><p>Identity Broker 流程<br><img src="http://www.keycloak.org/docs/latest/server_admin/images/identity_broker_flow.png" alt="Identity Broker Flow"></p>
+<ol>
+<li>用户未认证，并请求Client应用中受保护的资源（Client应用由ServiceProvider提供）</li>
+<li>Client拥有重定向用户到Keycloak进行身份认证</li>
+<li>此时，用户将会看到一个登陆页面，将会看到一个领域支持的身份提供商列表</li>
+<li>用户选择身份提供商</li>
+<li>Keycloak向目标身份提供商发出身份验证请求，要求身份验证，然后将身份提供商提供的登陆页面。身份提供商的连接参数和其它配置项有管理员在管理控制台中配置。</li>
+<li>用户提供他的证书或同意以便在身份提供商中进行身份验证。</li>
+<li>身份提供商成功验证身份后，用户将通过身份验证响应重定向到Keycloak。通常，此响应包含一个安全令牌，该令牌将被Keycloak用于信任身份提供商执行的身份认证，并检索用户的信息。</li>
+<li>Keycloak将检查身份提供商的响应是否有效。如果有效，它将导入并创建一个新用户，或者跳过存在的用户。如果它是一个新用户并且这个新信息在令牌中不存在，Keycloak可以向身份提供商询问有关用户的信息。这就是<code>Identity federation</code>（身份联盟）。如果用户已经存在，Keycloak可以要求他将身份提供商返回的身份与他现有的账户关联起来，这个过程称为<code>account linking</code>。最后Keycloak对用户进行身份认证并发放自己的令牌，用来访问服务提供商提供的资源。</li>
+<li>一旦用户被本地认证，Keycloak通过发送先前在本地认证期间发布的令牌将用户重定向到服务提供商。</li>
+<li>服务提供商从Keycloak接收令牌，并允许访问受保护的资源。</li>
+</ol>
+<p>身份验证过程结束时，Keycloak将始终向Client应用发出自己的令牌。这意味着Client应用与外部身份提供商完全分离。他们不需要知道使用哪种协议（例如：SAML，OpenID Connect，OAuth等），或者如何验证用户的身份。他们只需要知道Keycloak。</p>
+
       
     </div>
     
@@ -328,141 +339,36 @@
 
     <footer class="post-footer">
       
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/25/理解OAuth2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Wesley Wong">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Wesley Wong">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/25/理解OAuth2/" itemprop="url">理解OAuth2.0</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Veröffentlicht am</span>
-              
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-01-25T11:31:34+08:00">
-                2018-01-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
+        <div class="post-tags">
           
-
+            <a href="/tags/Keycloak/" rel="tag"># Keycloak</a>
           
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
         </div>
-      </header>
-    
+      
 
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
+      
       
       
 
       
-        
-          <h1 id="OAuth2-0"><a href="#OAuth2-0" class="headerlink" title="OAuth2.0"></a>OAuth2.0</h1><h2 id="OAuth2解决什么问题？"><a href="#OAuth2解决什么问题？" class="headerlink" title="OAuth2解决什么问题？"></a>OAuth2解决什么问题？</h2><p>为了更好的理解OAuth2.0，先假设这么一个例子：</p>
-<blockquote>
-<p>有一家叫“CloudPrint”的网站，能够将微信中照片在线打印出来。小明因为工作原因，需要挑选一些照片打印出来，想使用“CloudPrint”打印照片。问题是只有得到小明的授权，微信才会同意”CloudPrint”打印照片。</p>
-</blockquote>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2018/01/25/理解OAuth2/#more" rel="contents">
-              Weiterlesen &raquo;
-            </a>
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/25/理解OAuth2/" rel="next" title="理解OAuth2.0">
+                <i class="fa fa-chevron-left"></i> 理解OAuth2.0
+              </a>
+            
           </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
 
-    
+          <span class="post-nav-divider"></span>
 
-    
-
-    
-
-    <footer class="post-footer">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </div>
@@ -472,10 +378,11 @@
   </article>
 
 
-    
-  </section>
 
-  
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -483,6 +390,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -503,8 +414,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -555,6 +475,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Identity-Brokering"><span class="nav-number">1.</span> <span class="nav-text">Identity Brokering</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Brokering-Overview"><span class="nav-number">1.1.</span> <span class="nav-text">Brokering Overview</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -688,6 +624,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
