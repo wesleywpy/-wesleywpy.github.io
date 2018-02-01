@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>Keycloak OIDC Identity Provider | Wesley Wong</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="General ConfigurationIdentity Broker配置是基于Identity Provider，创建的Identity Provider每个领域都可以使用，默认情况下每个应用都将启用它们。 点击左侧的Identity Providers来创建identity provider">
+<meta name="keywords" content="keycloak">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Keycloak OIDC Identity Provider">
+<meta property="og:url" content="http://yoursite.com/2018/02/01/Keycloak-OIDC-Identity-Provider/index.html">
+<meta property="og:site_name" content="Wesley Wong">
+<meta property="og:description" content="General ConfigurationIdentity Broker配置是基于Identity Provider，创建的Identity Provider每个领域都可以使用，默认情况下每个应用都将启用它们。 点击左侧的Identity Providers来创建identity provider">
+<meta property="og:image" content="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/identity-providers.png">
+<meta property="og:image" content="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/add-identity-provider.png">
+<meta property="og:image" content="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/identity-provider-login-page.png">
+<meta property="og:image" content="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/oidc-add-identity-provider.png">
+<meta property="og:updated_time" content="2018-02-01T03:55:36.717Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Keycloak OIDC Identity Provider">
+<meta name="twitter:description" content="General ConfigurationIdentity Broker配置是基于Identity Provider，创建的Identity Provider每个领域都可以使用，默认情况下每个应用都将启用它们。 点击左侧的Identity Providers来创建identity provider">
+<meta name="twitter:image" content="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/identity-providers.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Wesley Wong" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Wesley Wong</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Suche"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-Keycloak-OIDC-Identity-Provider" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/02/01/Keycloak-OIDC-Identity-Provider/" class="article-date">
+  <time datetime="2018-02-01T03:54:34.000Z" itemprop="datePublished">2018-02-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Keycloak OIDC Identity Provider
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="General-Configuration"><a href="#General-Configuration" class="headerlink" title="General Configuration"></a>General Configuration</h2><p>Identity Broker配置是基于Identity Provider，创建的Identity Provider每个领域都可以使用，默认情况下每个应用都将启用它们。</p>
+<p>点击左侧的<code>Identity Providers</code>来创建identity provider</p>
+<p><img src="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/identity-providers.png" alt="IdentityProvider"></p>
+<a id="more"></a>
+<p>在下拉列表中，选择你要添加的identity provider。将进入配置页面</p>
+<p><img src="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/add-identity-provider.png" alt="添加IdentityProvider"></p>
+<p>配置成功后它将出现登录页面上</p>
+<p><img src="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/identity-provider-login-page.png" alt="IDPLoginPage"></p>
+<p><strong>社交账号</strong></p>
+<p>目前Keycloak支持的社交账号有Facebook，Google，Twitter，GitHub，LinkedIn，Microsoft，LinkedIn，PayPal和StackOverflow</p>
+<p><strong>基于协议</strong></p>
+<p>Keycloak提供对SAML v2.0和OpenID Connect v1.0协议的支持。它使基于这些协议的任何Identity provider的配置和代理变得简单。</p>
+<p>通用配置</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alias（必填）</td>
+<td>别名是身份提供者的唯一标识，用于在内部引用Identity Provider。</td>
+</tr>
+<tr>
+<td>Enabled</td>
+<td>打开或关闭 Identity Provider</td>
+</tr>
+<tr>
+<td>Hide On Login Page</td>
+<td>打开时，Prodiver将不会显示在登录页面。但Client任然能够通过在请求登录的URL中使用”kc_idp_hint”参数来请求此Identity Provider</td>
+</tr>
+<tr>
+<td>Link Only</td>
+<td>打开时此Identity Provider不会显示在登录页面，但是现有的账户任然能够链接到这个Identity Provider</td>
+</tr>
+<tr>
+<td>Store Tokens</td>
+<td>是否存储从Identity Provider接收到的令牌</td>
+</tr>
+<tr>
+<td>Stored Tokens Readable</td>
+<td>是否允许用户检索存储的Identity Provider令牌，这也适用于Client级别的Role能否读取到这个令牌</td>
+</tr>
+<tr>
+<td>Trust email</td>
+<td>如果Identity Provider提供了email，这个email将会被信任。如果登录时需要email，那么登录此Identity Provider的用户将不需要通过email邮箱验证。</td>
+</tr>
+<tr>
+<td>GUI orider</td>
+<td>Identity Provider在登录页面的排序</td>
+</tr>
+<tr>
+<td>First Login Flow</td>
+<td>这是第一次通过Identity Provider登录到Keycloak的用户触发的认证流程。</td>
+</tr>
+<tr>
+<td>Post Login Flow</td>
+<td>在用户使用外部Identity Provider完成登录后触发的身份验证流程。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="OpenID-Connect-v1-0-Identity-Providers"><a href="#OpenID-Connect-v1-0-Identity-Providers" class="headerlink" title="OpenID Connect v1.0 Identity Providers"></a>OpenID Connect v1.0 Identity Providers</h2><p>这些Identity Provider必须支持<code>Authorization Code Flow</code>流程，以便对用户进行身份验证及授权访问。</p>
+<p>添加OIDC Identity Provider<br><img src="http://www.keycloak.org/docs/latest/server_admin/keycloak-images/oidc-add-identity-provider.png" alt="addIdentityProvider"></p>
+<p>OpenID Connect配置</p>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Authorization URL</td>
+<td>OIDC协议需要的授权URL端点</td>
+</tr>
+<tr>
+<td>Token URL</td>
+<td>OIDC协议需要的Token URL端点</td>
+</tr>
+<tr>
+<td>Logout URL</td>
+<td>OIDC协议中定义的注销URL端点。这个值是可选的</td>
+</tr>
+<tr>
+<td>Backchannel Logout</td>
+<td>后台注销</td>
+</tr>
+<tr>
+<td>User Info URL</td>
+<td>OIDC协议定义的用户信息URL端点</td>
+</tr>
+<tr>
+<td>Client ID</td>
+<td>当前领域将作为一个OIDC Client，使用<code>Authorization Code Flow</code>流程授权时需要一个OIDC Client与外部Identity Provider进行交互</td>
+</tr>
+<tr>
+<td>Client Secret</td>
+<td>当使用<code>Authorization Code Flow</code>授权流程是，这个领域需要使用Client Secret</td>
+</tr>
+<tr>
+<td>Issuer</td>
+<td>来自Identity Provider发行人声明。配置项可选</td>
+</tr>
+<tr>
+<td>Default Scopes</td>
+<td>认证请求发送的OIDC scope的空格分隔列表，默认值openid</td>
+</tr>
+<tr>
+<td>Prompt</td>
+<td>OIDC规范定义的提示参数。可选配置</td>
+</tr>
+<tr>
+<td>Validate Signatures</td>
+<td>可选配置。指定Keycloak是否验证Identity Provider提供的ID Token上的签名，如果启用，Keycloak需要知道外部OIDC Identity Provider的公钥</td>
+</tr>
+<tr>
+<td>Use JWKS URL</td>
+<td>Validate Signatures配置打开，则可用。如果启用，Identity Provider的公钥将从给定的JWKS URL地址下载。如果关闭，则使用Keycloak DB中的公钥。</td>
+</tr>
+<tr>
+<td>JWKS URL</td>
+<td>Identity Provider存储JWK格式密钥的URL</td>
+</tr>
+<tr>
+<td>Validating Public Key</td>
+<td>适用于Use JWKS URL关闭。这是PEM格式的公钥，必须用来验证外部Identity Provider签名。</td>
+</tr>
+<tr>
+<td>Validating Public Key Id</td>
+<td>适用于Use JWKS URL关闭。该字段指定PEM格式的公钥的ID。此项值是可选的。</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Client-Suggested-Identity-Provider"><a href="#Client-Suggested-Identity-Provider" class="headerlink" title="Client Suggested Identity Provider"></a>Client Suggested Identity Provider</h2><p>通过指定Identity Provider，OIDC 应用可以绕过Keycloak登录页面。</p>
+<p>这是通过在Authorization Code Flow授权end point中设置<code>kc_idp_hint</code>查询参数完成的。</p>
+<p>Keycloak OIDC Client适配器还允许你在访问受保护的资源时候指定此查询参数。</p>
+<p>比如<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">GET /myapplication.com?kc_idp_hint=facebook HTTP/1.1</span><br><span class="line">Host: localhost:8080</span><br></pre></td></tr></table></figure></p>
+<p>在这种情况下，预计你领域中有个别名是<code>facebook</code>的Identity Provider。如果提供者不存在，将显示登录表单。</p>
+<h2 id="First-Login-Flow"><a href="#First-Login-Flow" class="headerlink" title="First Login Flow"></a>First Login Flow</h2><p>当Keycloak通过外部Identity Provider成功验证用户时，会出现两种情况</p>
+<ul>
+<li>已经有一个Keycloak账号与认证的Identity Provider用户相关联，这种情况下Keycloak只是进行身份验证并且重定向到Client应用</li>
+<li>外部用户没有与Keycloak用户关联。通常情况下，只需要注册并将新账号导入Keycloak数据库即可，但是如果外部用户的email与已经存在的Keycloak用户一样的话，就会出现问题。</li>
+</ul>
+<p>处理这种用户冲突情况时，在IdentityProvider配置中有<code>First Login Flow</code>选项，用来选择第一次从外部Identity Provider登录后的工作流程。这个工作流程是在管理控制台<code>Authentication</code>选项中配置的，可以重新配置现有流程。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2018/02/01/Keycloak-OIDC-Identity-Provider/" data-id="cjd3yyq250002bsirmkv9l7qd" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/keycloak/">keycloak</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/01/30/Keycloak-Identity-Brokering/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Keycloak Identity Brokering</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Keycloak/">Keycloak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/OAuth2/">OAuth2</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/keycloak/">keycloak</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/协议/">协议</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Keycloak/" style="font-size: 10px;">Keycloak</a> <a href="/tags/OAuth2/" style="font-size: 10px;">OAuth2</a> <a href="/tags/keycloak/" style="font-size: 10px;">keycloak</a> <a href="/tags/协议/" style="font-size: 10px;">协议</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2018/02/01/Keycloak-OIDC-Identity-Provider/">Keycloak OIDC Identity Provider</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/30/Keycloak-Identity-Brokering/">Keycloak Identity Brokering</a>
+          </li>
+        
+          <li>
+            <a href="/2018/01/25/理解OAuth2/">理解OAuth2.0</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2018 Wesley Wong<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
